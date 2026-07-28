@@ -1,0 +1,42 @@
+################################
+# current project
+CumPressure:
+  extent:
+    extent_vector: aus_imcra_prov_dissolve
+    extent_filt_col: ~
+    extent_filt_level: ~
+    extent_buffer: 0
+    extent_time: P50Y
+    region_taxa: sa_br_dissolve
+  grain:
+    res_x: 90
+    res_y: 90
+    grain_time: P1Y
+    taxonomic: species
+    
+# other project   
+envCleaned:
+  extent:
+    extent_time: P100Y # must be a period of years
+  grain:
+    grain_x: 30
+    grain_y: 30
+    
+envRange:
+  extent:
+    extent_vector: aus_imcra_prov_dissolve
+    
+envSDMs:
+  extent:
+    extent_vector: sa_br_dissolve
+    region_taxa: NULL
+    
+envEco:
+  grain:
+    res_x: 30
+    res_y: 30
+  aoi:
+    aoi_vector: sa_br_dissolve
+    aoi_filt_col: ""
+    aoi_filt_level: ""
+    aoi_buffer: 0
