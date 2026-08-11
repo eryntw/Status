@@ -1,6 +1,6 @@
 ################################
 # current project
-CumPressure:
+Threat:
   extent:
     extent_vector: aus_imcra_prov_dissolve
     extent_filt_col: ~

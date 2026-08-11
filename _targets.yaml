@@ -1,15 +1,12 @@
 setup:
-  script: ../CumPressure/010_setup.R
-  store: ../../out/CumPressure/aus_imcra_prov_dissolve______0__P50Y__sa_br_dissolve/90__90__P1Y__species/setup
+  script: ../Threat/010_setup.R
+  store: ../../out/Threat/aus_imcra_prov_dissolve______0__P50Y__sa_br_dissolve/90__90__P1Y__species/setup
 iucn:
-  script: ../CumPressure/020_iucn.R
-  store: ../../out/CumPressure/aus_imcra_prov_dissolve______0__P50Y__sa_br_dissolve/90__90__P1Y__species/iucn
+  script: ../Threat/020_iucn.R
+  store: ../../out/Threat/aus_imcra_prov_dissolve______0__P50Y__sa_br_dissolve/90__90__P1Y__species/iucn
 sdmstats:
-  script: ../CumPressure/030_sdmstats.R
-  store: ../../out/CumPressure/aus_imcra_prov_dissolve______0__P50Y__sa_br_dissolve/90__90__P1Y__species/sdmstats
-make_dev_layer:
-  script: ../CumPressure/040_make_dev_layer.R
-  store: ../../out/CumPressure/aus_imcra_prov_dissolve______0__P50Y__sa_br_dissolve/90__90__P1Y__species/make_dev_layer
+  script: ../Threat/030_sdmstats.R
+  store: ../../out/Threat/aus_imcra_prov_dissolve______0__P50Y__sa_br_dissolve/90__90__P1Y__species/sdmstats
 envCleaned:
   clean:
     script: ../envCleaned/010_clean.R

@@ -54,38 +54,18 @@ tar_plan(
   
   #### GHM 2022 ----
   tar_target(
-    ghm_tile_files,
-    fs::dir_ls(path = "/mnt/envshare/data/raster/GEE_GlobalHumanModification_90m",
+    ghm_mosaic_paths,
+    fs::dir_ls(path = "/mnt/envshare/data/raster/GEE_GlobalHumanModification_90m/ghm_mosaics",
                glob = "*.tif", 
                recurse = TRUE),
-    cue = tar_cue(mode = "always")
+    format = "files"
   ),
-  
-  tar_files(
-    ghm_tile_paths,
-    ghm_tile_files
-  ),
-  
-  tar_target(
-    ghm_tile_meta,
-    tibble::tibble(
-      path = ghm_tile_paths,
-      theme = fs::path_file(fs::path_dir(ghm_tile_paths))
-    ) %>%
-      dplyr::filter(theme %in% c("AA", "BU", "AG"))
-  ),
-  
-  tar_target(
-    ghm_mosaic_paths,
-    mosaic_by_theme(ghm_tile_meta, out_dir = "output/ghm_mosaics"),
-    format = "file"
-  ),
-  
+
   ## Protected area ----
   
   tar_target(
     capad2024_path,
-    "/mnt/envshare/data/vector/raw/capad_2024_terrestrial/Collaborative_Australian_Protected_Areas_Database_(CAPAD)_2024_-_Terrestrial__.shp",
+    "/mnt/envshare/data/vector/raw/dcceew/capad_2024/Collaborative_Australian_Protected_Areas_Database_(CAPAD)_2024_-_Terrestrial__.shp",
     format = "file"
   )
 
