@@ -15,6 +15,8 @@ tar_source()
 
 # targets -------
 
+datadir <- "/mnt/envshare/data"
+
 tar_plan(
   
   #### Species SDM ----
@@ -55,17 +57,20 @@ tar_plan(
   #### GHM 2022 ----
   tar_target(
     ghm_mosaic_paths,
-    fs::dir_ls(path = "/mnt/envshare/data/raster/GEE_GlobalHumanModification_90m/ghm_mosaics",
+    fs::dir_ls(path = fs::path(datadir, "raster",
+                               "GEE_GlobalHumanModification_90m",
+                               "ghm_mosaics"),
                glob = "*.tif", 
                recurse = TRUE),
-    format = "files"
+    format = "file"
   ),
 
   ## Protected area ----
   
   tar_target(
     capad2024_path,
-    "/mnt/envshare/data/vector/raw/dcceew/capad_2024/Collaborative_Australian_Protected_Areas_Database_(CAPAD)_2024_-_Terrestrial__.shp",
+    fa::path(datadird, "vector",
+             "raw/dcceew/capad_2024/capad_merged.gpkg"),
     format = "file"
   )
 

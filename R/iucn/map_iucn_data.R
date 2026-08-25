@@ -9,7 +9,7 @@
 #' ("Genus species").
 #'
 #' @param splist A data frame containing species names. Must include
-#'   columns `Genus`, `Species`, and `search_term`.
+#'   columns `Genus`, `Species`
 #' @param api An authenticated IUCN API object.
 #' @param synonym_path File path to a CSV containing synonym mappings.
 #'   The CSV must include columns `id` (original name) and `name_bi`
@@ -96,6 +96,7 @@ map_iucn_data <- function(splist,
   
   # ---- Join to species list ----
   splist_iucn <- splist %>%
+    dplyr::mutate(search_term = paste(Genus, Species)) |> 
     dplyr::left_join(mains_df, by = c("search_term" = "scientific_name"))
   
   # ---- Identify not found species ----

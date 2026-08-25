@@ -1,6 +1,6 @@
 ################################
 # current project
-Threat:
+Status:
   extent:
     extent_vector: aus_imcra_prov_dissolve
     extent_filt_col: ~
@@ -14,7 +14,22 @@ Threat:
     grain_time: P1Y
     taxonomic: species
     
-# other project   
+# other project
+
+RecExtract:
+  extent:
+    extent_vector: ~
+    extent_buffer: ~
+    extent_time: ~
+    region_taxa: ~
+  grain:
+    res_x: ~
+    res_y: ~
+    grain_time: ~
+    taxonomic: ~
+  store:
+    store: "_targets"
+
 envCleaned:
   extent:
     extent_time: P100Y # must be a period of years

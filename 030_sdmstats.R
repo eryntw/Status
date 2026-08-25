@@ -27,19 +27,13 @@ tar_plan(
   
   tar_target(
     capad_merged_path,
-    {
-      capad <- terra::vect(capad2024_path) |> terra::aggregate(dissolve = TRUE)
-      out_path <- "output/capad_merged.gpkg"
-      fs::dir_create(fs::path_dir(out_path))
-      terra::writeVector(capad, out_path, overwrite = TRUE)
-      out_path
-    },
+    "/mnt/envshare/data/vector/raw/dcceew/capad_2024/capad_merged.gpkg"
     format = "file"
   ),
   
   tar_target(
     thresh_meta_grouped,
-    thresh_meta |> head(3) |> ## test with three SDMs
+    thresh_meta |> head(100) |> ## test with three SDMs
       dplyr::group_by(dplyr::row_number()) |>
       targets::tar_group(),
     iteration = "group"

@@ -1,12 +1,12 @@
 setup:
-  script: ../Threat/010_setup.R
-  store: ../../out/Threat/aus_imcra_prov_dissolve______0__P50Y__sa_br_dissolve/90__90__P1Y__species/setup
+  script: ../Status/010_setup.R
+  store: ../../out/Status/aus_imcra_prov_dissolve______0__P50Y__sa_br_dissolve/90__90__P1Y__species/setup
 iucn:
-  script: ../Threat/020_iucn.R
-  store: ../../out/Threat/aus_imcra_prov_dissolve______0__P50Y__sa_br_dissolve/90__90__P1Y__species/iucn
+  script: ../Status/020_iucn.R
+  store: ../../out/Status/aus_imcra_prov_dissolve______0__P50Y__sa_br_dissolve/90__90__P1Y__species/iucn
 sdmstats:
-  script: ../Threat/030_sdmstats.R
-  store: ../../out/Threat/aus_imcra_prov_dissolve______0__P50Y__sa_br_dissolve/90__90__P1Y__species/sdmstats
+  script: ../Status/030_sdmstats.R
+  store: ../../out/Status/aus_imcra_prov_dissolve______0__P50Y__sa_br_dissolve/90__90__P1Y__species/sdmstats
 envCleaned:
   clean:
     script: ../envCleaned/010_clean.R
@@ -14,12 +14,41 @@ envCleaned:
   outliers:
     script: ../envCleaned/020_outliers.R
     store: ../../out/envCleaned/aus_imcra_prov_dissolve______0__P100Y__sa_br_dissolve/90__90__P1Y__species__30__30/outliers
+  populations:
+    script: ../envCleaned/030_populations.R
+    store: ../../out/envCleaned/aus_imcra_prov_dissolve______0__P100Y__sa_br_dissolve/90__90__P1Y__species__30__30/populations
   report_prep:
     script: ../envCleaned/040_report_prep.R
     store: ../../out/envCleaned/aus_imcra_prov_dissolve______0__P100Y__sa_br_dissolve/90__90__P1Y__species__30__30/report_prep
   report:
     script: ../envCleaned/050_report.R
     store: ../../out/envCleaned/aus_imcra_prov_dissolve______0__P100Y__sa_br_dissolve/90__90__P1Y__species__30__30/report
+  release:
+    script: ../envCleaned/060_release.R
+    store: ../../out/envCleaned/aus_imcra_prov_dissolve______0__P100Y__sa_br_dissolve/90__90__P1Y__species__30__30/release
+RecExtract:
+  RecExtr:
+    script: ../RecExtract/010_RecExtr.R
+    store: ../../out/RecExtract/_targets/RecExtr
+envSDMs:
+  setup:
+    script: ../envSDMs/010_setup.R
+    store: /projects/projects_extra/out/envSDMs/sa_br_dissolve______0__P50Y/90__90__P1Y__species/setup
+  sdm:
+    script: ../envSDMs/020_sdm.R
+    store: /projects/projects_extra/out/envSDMs/sa_br_dissolve______0__P50Y/90__90__P1Y__species/sdm
+  shap_meta:
+    script: ../envSDMs/040_shap_meta.R
+    store: /projects/projects_extra/out/envSDMs/sa_br_dissolve______0__P50Y/90__90__P1Y__species/shap_meta
+  report_prep:
+    script: ../envSDMs/060_report_prep.R
+    store: /projects/projects_extra/out/envSDMs/sa_br_dissolve______0__P50Y/90__90__P1Y__species/report_prep
+  report:
+    script: ../envSDMs/070_report.R
+    store: /projects/projects_extra/out/envSDMs/sa_br_dissolve______0__P50Y/90__90__P1Y__species/report
+  release:
+    script: ../envSDMs/090_release.R
+    store: /projects/projects_extra/out/envSDMs/sa_br_dissolve______0__P50Y/90__90__P1Y__species/release
 envRange:
   setup:
     script: ../envRange/010_setup.R
@@ -36,59 +65,3 @@ envRange:
   report:
     script: ../envRange/080_report.R
     store: ../../out/envRange/aus_imcra_prov_dissolve______0__P50Y__sa_br_dissolve/90__90__P1Y__species/report
-envSDMs:
-  setup:
-    script: ../envSDMs/010_setup.R
-    store: ../../out/envSDMs/sa_br_dissolve______0__P50Y/90__90__P1Y__species/setup
-  sdm:
-    script: ../envSDMs/020_sdm.R
-    store: ../../out/envSDMs/sa_br_dissolve______0__P50Y/90__90__P1Y__species/sdm
-  shap_meta:
-    script: ../envSDMs/040_shap_meta.R
-    store: ../../out/envSDMs/sa_br_dissolve______0__P50Y/90__90__P1Y__species/shap_meta
-  report_prep:
-    script: ../envSDMs/060_report_prep.R
-    store: ../../out/envSDMs/sa_br_dissolve______0__P50Y/90__90__P1Y__species/report_prep
-  report:
-    script: ../envSDMs/070_report.R
-    store: ../../out/envSDMs/sa_br_dissolve______0__P50Y/90__90__P1Y__species/report
-  release:
-    script: ../envSDMs/090_release.R
-    store: ../../out/envSDMs/sa_br_dissolve______0__P50Y/90__90__P1Y__species/release
-envEco:
-  setup:
-    script: ../envEco/010_setup.R
-    store: ../../out/envEco/aus_imcra_prov_dissolve______0__P50Y__sa_br_dissolve/30__30__P1Y__species/sa_br_dissolve______0/setup
-  biota:
-    script: ../envEco/015_biota.R
-    store: ../../out/envEco/aus_imcra_prov_dissolve______0__P50Y__sa_br_dissolve/30__30__P1Y__species/sa_br_dissolve______0/biota
-  combine_env:
-    script: ../envEco/017_combine_env.R
-    store: ../../out/envEco/aus_imcra_prov_dissolve______0__P50Y__sa_br_dissolve/30__30__P1Y__species/sa_br_dissolve______0/combine_env
-  cluster:
-    script: ../envEco/020_cluster.R
-    store: ../../out/envEco/aus_imcra_prov_dissolve______0__P50Y__sa_br_dissolve/30__30__P1Y__species/sa_br_dissolve______0/cluster
-  rf:
-    script: ../envEco/030_rf.R
-    store: ../../out/envEco/aus_imcra_prov_dissolve______0__P50Y__sa_br_dissolve/30__30__P1Y__species/sa_br_dissolve______0/rf
-  ecosystems:
-    script: ../envEco/040_ecosystems.R
-    store: ../../out/envEco/aus_imcra_prov_dissolve______0__P50Y__sa_br_dissolve/30__30__P1Y__species/sa_br_dissolve______0/ecosystems
-  ecotypes:
-    script: ../envEco/050_ecotypes.R
-    store: ../../out/envEco/aus_imcra_prov_dissolve______0__P50Y__sa_br_dissolve/30__30__P1Y__species/sa_br_dissolve______0/ecotypes
-  predict:
-    script: ../envEco/060_predict.R
-    store: ../../out/envEco/aus_imcra_prov_dissolve______0__P50Y__sa_br_dissolve/30__30__P1Y__species/sa_br_dissolve______0/predict
-  extract:
-    script: ../envEco/065_extract.R
-    store: ../../out/envEco/aus_imcra_prov_dissolve______0__P50Y__sa_br_dissolve/30__30__P1Y__species/sa_br_dissolve______0/extract
-  report_prep:
-    script: ../envEco/070_report_prep.R
-    store: ../../out/envEco/aus_imcra_prov_dissolve______0__P50Y__sa_br_dissolve/30__30__P1Y__species/sa_br_dissolve______0/report_prep
-  report:
-    script: ../envEco/080_report.R
-    store: ../../out/envEco/aus_imcra_prov_dissolve______0__P50Y__sa_br_dissolve/30__30__P1Y__species/sa_br_dissolve______0/report
-  release:
-    script: ../envEco/090_release.R
-    store: ../../out/envEco/aus_imcra_prov_dissolve______0__P50Y__sa_br_dissolve/30__30__P1Y__species/sa_br_dissolve______0/release
