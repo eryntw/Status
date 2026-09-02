@@ -65,13 +65,31 @@ tar_plan(
     format = "file"
   ),
 
-  ## Protected area ----
+  #### Protected area ----
   
   tar_target(
     capad2024_path,
-    fa::path(datadird, "vector",
+    fs::path(datadir, "vector",
              "raw/dcceew/capad_2024/capad_merged.gpkg"),
     format = "file"
-  )
+  ),
+  
+  #### RegContSum ----
+  
+  ## AOI = state ----
+  tarchetypes::tar_file_read(
+    regcontSA_spmax,
+    fs::path(tars$envRegContSum$summary$store, "summary_ind.csv"),
+    readr::read_csv(!!.x) |> 
+      dplyr::filter(Rank == "species") |>
+      dplyr::group_by(Taxa) |>
+      dplyr::slice_max(`Max region contrib (%)`, n = 1, with_ties = FALSE) |>
+      dplyr::ungroup() |>
+      tidyr::separate(Taxa, into = c("Genus", "Species"), sep = " ", 
+                      extra = "merge", remove = FALSE) |>
+      dplyr::filter(stringr::str_detect(Taxa, "^[A-Z][a-z]+ [a-z]+$"))
+  ),
+  
+  ## AOI = development ----
 
 )

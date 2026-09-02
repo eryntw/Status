@@ -3,7 +3,7 @@ library(dplyr)
 library(tarchetypes)
 library(crew)
 
-use_cores <- parallel::detectCores() - 2
+use_cores <- 10 # Too many workers will crash edge calculation
 tar_option_set(packages = yaml::read_yaml("settings/packages.yaml")$packages, 
                controller = crew::crew_controller_local(workers = use_cores))
 
@@ -23,17 +23,23 @@ terra_memfrac <- total_terra_ram_prop / use_cores
 
 tar_plan(
   
+  ## SDM test set ----
+  tar_target(
+    thresh_meta_test,
+    thresh_meta_grouped |> dplyr::slice_sample(n = 10)
+  ),
+  
   ## Protected area merge ----
   
   tar_target(
     capad_merged_path,
-    "/mnt/envshare/data/vector/raw/dcceew/capad_2024/capad_merged.gpkg"
+    "/mnt/envshare/data/vector/raw/dcceew/capad_2024/capad_merged.gpkg",
     format = "file"
   ),
   
   tar_target(
     thresh_meta_grouped,
-    thresh_meta |> head(100) |> ## test with three SDMs
+    thresh_meta |> 
       dplyr::group_by(dplyr::row_number()) |>
       targets::tar_group(),
     iteration = "group"
@@ -50,14 +56,30 @@ tar_plan(
     }
   ),
   
-  ## SDM stats (branch) ----
+  ## SDM in protected area (branch) ----
   
   tar_target(
     sdm_calculation,
     {
       terra::terraOptions(memfrac = use_memfrac)
       capad <- terra::vect(capad_merged_path)
-      summarise_sdm(thresh_meta_grouped$path, capad_merged = capad)
+      summarise_sdm(thresh_meta_grouped$path, 
+                    capad_merged = capad)
+    },
+    pattern = map(thresh_meta_grouped),
+    iteration = "list",
+    garbage_collection = TRUE
+  ),
+  
+  ## SDM edge (branch) ----
+  tar_target(
+    edge_calculation,
+    {
+      terra::terraOptions(memfrac = use_memfrac)
+      summarise_edge(thresh_meta_grouped$path, 
+                     target_crs = "EPSG:7853", # MGA zone 53
+                     min_patch_ha = 36,
+                     directions = 8)
     },
     pattern = map(thresh_meta_grouped),
     iteration = "list",
@@ -68,7 +90,10 @@ tar_plan(
   
   tar_target(
     sdm_summary,
-    dplyr::bind_rows(sdm_calculation) |> 
-      dplyr::inner_join(thresh_meta, by = "path")
+    thresh_meta |> 
+      dplyr::inner_join(dplyr::bind_rows(sdm_calculation), 
+                        by = "path") |> 
+      dplyr::inner_join(dplyr::bind_rows(edge_calculation),
+                        by = c("search_term" = "species"))
   ),
 )

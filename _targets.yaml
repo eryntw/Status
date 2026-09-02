@@ -7,6 +7,9 @@ iucn:
 sdmstats:
   script: ../Status/030_sdmstats.R
   store: ../../out/Status/aus_imcra_prov_dissolve______0__P50Y__sa_br_dissolve/90__90__P1Y__species/sdmstats
+regcont:
+  script: ../Status/040_regcont.R
+  store: ../../out/Status/aus_imcra_prov_dissolve______0__P50Y__sa_br_dissolve/90__90__P1Y__species/regcont
 envCleaned:
   clean:
     script: ../envCleaned/010_clean.R
@@ -49,19 +52,10 @@ envSDMs:
   release:
     script: ../envSDMs/090_release.R
     store: /projects/projects_extra/out/envSDMs/sa_br_dissolve______0__P50Y/90__90__P1Y__species/release
-envRange:
-  setup:
-    script: ../envRange/010_setup.R
-    store: ../../out/envRange/aus_imcra_prov_dissolve______0__P50Y__sa_br_dissolve/90__90__P1Y__species/setup
-  mcp:
-    script: ../envRange/020_mcp.R
-    store: ../../out/envRange/aus_imcra_prov_dissolve______0__P50Y__sa_br_dissolve/90__90__P1Y__species/mcp
-  grd:
-    script: ../envRange/030_grd.R
-    store: ../../out/envRange/aus_imcra_prov_dissolve______0__P50Y__sa_br_dissolve/90__90__P1Y__species/grd
-  report_prep:
-    script: ../envRange/070_report_prep.R
-    store: ../../out/envRange/aus_imcra_prov_dissolve______0__P50Y__sa_br_dissolve/90__90__P1Y__species/report_prep
-  report:
-    script: ../envRange/080_report.R
-    store: ../../out/envRange/aus_imcra_prov_dissolve______0__P50Y__sa_br_dissolve/90__90__P1Y__species/report
+envRegContSum:
+  summary:
+    script: ../envRegContSum/010_summary.R
+    store: ../../out/envRegContSum/aus_imcra_prov_dissolve______0__P20Y--P50Y__sa_br_dissolve/30__30__P1Y__species--subspecies/sa_land_sea______0/summary
+  release:
+    script: ../envRegContSum/020_release.R
+    store: ../../out/envRegContSum/aus_imcra_prov_dissolve______0__P20Y--P50Y__sa_br_dissolve/30__30__P1Y__species--subspecies/sa_land_sea______0/release

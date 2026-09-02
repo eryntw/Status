@@ -4,7 +4,7 @@ library(crew)
 library(dplyr)
 
 tar_option_set(packages = yaml::read_yaml("settings/packages.yaml")$packages, 
-               controller = crew::crew_controller_local(workers = 100))
+               controller = crew::crew_controller_local(workers = 1))
 
 
 # tars -------
@@ -16,14 +16,17 @@ tar_source()
 # targets -------
 
 thresh_meta_classified <- tar_read(thresh_meta_classified, store = tars$setup$store)
+regcontSA_spmax <- tar_read(regcontSA_spmax, store = tars$setup$store)
 
 tar_plan(
   
   ## Get IUCN data for all modeled species -------
   targets::tar_target(name = iucn_data,
                       command = map_iucn_data(
-                        thresh_meta_classified,
-                        query_fn = get_iucn_threat) # make sure api is fresh each call
+                        regcontSA_spmax, #|> dplyr::slice_sample(n = 50), ## test !!!!
+                        query_fn = get_iucn_threat,
+                        pause = 1,
+                        max_retries = 5)
   ),
   
   ## Extract threats ------
@@ -56,7 +59,7 @@ tar_plan(
   ),
   
   # Join tables -----
-  targets::tar_target(name = threats,
+  targets::tar_target(name = iucn_summary,
                       command = scored_trendstatus %>%
                         dplyr::left_join(threatsum$species_summary,
                                          by=c("scientific_name","common")) %>%

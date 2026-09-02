@@ -63,63 +63,77 @@
 map_iucn_data <- function(splist,
                           synonym_path = "data/synonyms.csv",
                           query_fn     = get_iucn_threat,
-                          pause        = 1) {
+                          pause        = 1,
+                          max_retries  = 5) {
   
-  # ---- Helper: run query_fn over a data frame with Genus + Species, throttled ----
+  splist <- splist |>
+    dplyr::mutate(search_term = paste(Genus, Species))
+  
+  query_iucn_safely <- function(api, g, s) {
+    attempt <- 1
+    repeat {
+      Sys.sleep(pause)
+      result <- tryCatch(query_fn(api, g, s), error = function(e) e)
+      
+      is_429 <- inherits(result, "error") && grepl("429", conditionMessage(result))
+      if (!is_429) return(result)
+      
+      if (attempt >= max_retries) {
+        warning(sprintf("Giving up on %s %s after %d retries (429)", g, s, attempt))
+        return(list(main = NULL, syms = NULL))
+      }
+      
+      backoff <- pause * (2 ^ attempt)
+      message(sprintf("429 for %s %s — backing off %.1fs (attempt %d)", g, s, backoff, attempt))
+      Sys.sleep(backoff)
+      attempt <- attempt + 1
+    }
+  }
+  
   run_query <- function(df) {
-    df %>%
+    api <- iucnredlist::init_api(Sys.getenv("IUCN_REDLIST_KEY"))
+    
+    df |>
       dplyr::mutate(
         result = purrr::map2(
           Genus, Species,
-          \(g, s) {
-            api <- iucnredlist::init_api(Sys.getenv("IUCN_REDLIST_KEY"))  # fresh per call
-            Sys.sleep(pause)
-            query_fn(api, g, s)
-          },
+          \(g, s) query_iucn_safely(api, g, s),
           .progress = TRUE
         )
       )
   }
   
-  # ---- Helper: extract main records from results ----
   extract_mains <- function(results) {
-    results %>%
-      dplyr::mutate(main = purrr::map(result, "main")) %>%
-      dplyr::pull(main) %>%
-      purrr::discard(is.null) %>%
+    results |>
+      dplyr::mutate(main = purrr::map(result, "main")) |>
+      dplyr::pull(main) |>
+      purrr::discard(is.null) |>
       dplyr::bind_rows()
   }
   
-  # ---- First IUCN query ----
   results  <- run_query(splist)
   mains_df <- extract_mains(results)
   
-  # ---- Join to species list ----
-  splist_iucn <- splist %>%
-    dplyr::mutate(search_term = paste(Genus, Species)) |> 
+  splist_iucn <- results |>
+    dplyr::select(-result) |>
     dplyr::left_join(mains_df, by = c("search_term" = "scientific_name"))
   
-  # ---- Identify not found species ----
-  rows_null <- results %>%
+  rows_null <- results |>
     dplyr::mutate(
       both_null = purrr::map_lgl(result, ~ is.null(.x$main) && is.null(.x$syms))
-    ) %>%
+    ) |>
     dplyr::filter(both_null)
   
-  # ---- Read synonym table ----
   synonyms <- readr::read_csv(synonym_path, col_types = readr::cols())
   
-  # ---- Match synonyms ----
-  synmatch <- rows_null %>%
-    dplyr::select(search_term) %>%
-    dplyr::left_join(synonyms, by = c("search_term" = "id")) %>%
+  synmatch <- rows_null |>
+    dplyr::select(search_term) |>
+    dplyr::left_join(synonyms, by = c("search_term" = "id")) |>
     tidyr::separate(name_bi, into = c("Genus", "Species"), sep = " ")
   
-  # ---- Second IUCN query using synonyms ----
   results2  <- run_query(synmatch)
   mains_df2 <- extract_mains(results2)
   
-  # ---- Combine results ----
   iucn_data <- dplyr::bind_rows(mains_df, mains_df2)
   
   return(list(

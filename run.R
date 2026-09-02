@@ -27,11 +27,12 @@ tars_sdm <- envTargets::make_tars(settings = envFunc::extract_scale("envSDMs"),
                                   store_base = "/projects/projects_extra/out", # PROD
                                   local = FALSE)
 
-tars_range <- envTargets::make_tars(settings = envFunc::extract_scale("envRange"),
-                                    project_base = fs::path("..", "envRange"),
-                                    local = FALSE)
+tars_regcontsum <- envTargets::make_tars(settings = envFunc::extract_scale("envRegContSum"),
+                                      project_base = fs::path("..", "envRegContSum"),
+                                      local = FALSE,
+                                      list_names = c("extent", "grain", "aoi"))
 
-tars <- c(tars_local, tars_cleaned, tars_rec, tars_sdm, tars_range)
+tars <- c(tars_local, tars_cleaned, tars_rec, tars_sdm, tars_regcontsum)
 
 envTargets::write_tars(tars)
 

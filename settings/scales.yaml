@@ -55,3 +55,21 @@ envEco:
     aoi_filt_col: ""
     aoi_filt_level: ""
     aoi_buffer: 0
+    
+envRegContSum:
+  extent:
+    extent_time: 
+    - P20Y
+    - P50Y
+  grain:
+    res_x: 30
+    res_y: 30
+    grain_time: P1Y
+    taxonomic:
+    - species
+    - subspecies
+  aoi:
+    aoi_vector: sa_land_sea
+    aoi_filt_col: ~
+    aoi_filt_level: ~
+    aoi_buffer: 0
