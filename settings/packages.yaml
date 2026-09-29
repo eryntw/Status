@@ -1,0 +1,30 @@
+packages:
+  - dplyr
+  - tidyr
+  - purrr
+  - readr
+  - fs
+  - targets
+  - tarchetypes
+  - crew
+  - broom
+  - stringr
+  - readxl
+  - arrow
+  - envTargets
+  - envClean
+  - envFunc
+  - janitor
+  - scales
+  - COINr
+  - fuzzyjoin
+
+database:
+  - traitdata
+  - rredlist
+  - galah
+  - ritis
+  - taxize
+  - taxadb
+  - potions
+  
